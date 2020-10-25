@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+  <title>Sorting Visualizer</title>
+</head>
+
+<body>
+  <header>
+    <h1>Sorting Visualizer</h1>
+    <div>
+      <label>Choose Algorithm: </label>
+      <select id="algoType">
+        <option value="selection">Selection sort</option>
+        <option value="bubble">Bubble sort</option>
+        <option value="insertion">Insertion sort</option>
+      </select>
+    </div>
+    <div>
+      <label>Choose style: </label>
+      <select id="arrayStyle">
+        <option value="bars">Bars</option>
+        <option value="blocks">Blocks</option>
+      </select>
+    </div>
+    <div>
+      <label>Length: </label>
+      <input type="range" min="10" max="50" id="lengthSlider">
+    </div>
+    <div>
+      <label>Delay: </label>
+      <input type="range" min="50" max="500" id="delaySlider">
+    </div>
+  </header>
+  <div class="container">
+    <div id="array" class="array"></div>
+    <div>
+      <button id="sort">Sort</button>
+      <!-- <button id="cancel">Cancel</button> -->
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>

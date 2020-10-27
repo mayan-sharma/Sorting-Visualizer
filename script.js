@@ -1,6 +1,6 @@
 const arrayContainer = document.getElementById("array");
 const sortButton = document.getElementById("sort");
-// const cancelButton = document.getElementById('cancel');
+const resetButton = document.getElementById('reset');
 const algoTypeInput = document.getElementById('algoType');
 const arrayStyleInput = document.getElementById("arrayStyle");
 const lengthSlider = document.getElementById("lengthSlider");
@@ -13,6 +13,7 @@ let len = 20;
 let delay = 100;
 let arrayStyle = "bars";
 let algoType = "selection";
+// let isSorting = false;
 
 const bubbleSort = arr => {
   const n = arr.length;
@@ -34,12 +35,13 @@ const selectionSort = arr => {
   for (let i = 0; i < n - 1; i++) {
     let min_idx = i;
     for (let j = i + 1; j < n; j++) {
-      if (arr[j] < arr[min_idx]) min_idx = j;
+      if (arr[j] < arr[min_idx]) {
+        min_idx = j;
+        swapList.push([j, min_idx]);
+        arrayList.push(JSON.parse(JSON.stringify(arr)));
+      }
     }
     [arr[i], arr[min_idx]] = [arr[min_idx], arr[i]];
-
-    swapList.push([i, min_idx]);
-    arrayList.push(JSON.parse(JSON.stringify(arr)));
   }
 }
 
@@ -54,6 +56,43 @@ const insertionSort = arr => {
       arrayList.push(JSON.parse(JSON.stringify(arr)));
     }
     arr[j + 1] = key;
+  }
+}
+
+const merge = (arr, l, mid, r) => {
+  let i = l, j = mid + 1;
+
+  if (arr[mid] <= arr[j]) return;
+
+  while (i <= mid && j <= r) {
+    if (arr[i] <= arr[j]) i++;
+    else {
+      const key = arr[r];
+      let index = r;
+
+      while (index != l) {
+        arr[index] = arr[index - 1];
+        swapList.push([index], [index - 1]);
+        index--;
+      }
+      arr[l] = key;
+
+      i++;
+      j++;
+      mid++;
+
+    }
+    arrayList.push(arr);
+  }
+}
+
+const mergeSort = (arr, l, r) => {
+  if (l < r) {
+    const mid = Math.floor((l + r) / 2);
+    mergeSort(arr, l, mid);
+    mergeSort(arr, mid + 1, r);
+    merge(arr, l, mid, r);
+    arrayList.push(arr);
   }
 }
 
@@ -103,6 +142,9 @@ const sortDOM = (arrayStyle, algoType) => {
     case "insertion":
       insertionSort(array);
       break;
+    case "merge":
+      mergeSort(array, 0, array.length - 1);
+      break;
     default:
       bubbleSort(array);
   }
@@ -136,6 +178,7 @@ delaySlider.addEventListener("change", e => {
 })
 
 sortButton.addEventListener('click', () => sortDOM(arrayStyle, algoType));
+resetButton.addEventListener('click', () => init());
 
 function init() {
   arrayContainer.innerHTML = "";

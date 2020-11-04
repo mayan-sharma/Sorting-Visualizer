@@ -12,7 +12,7 @@ let swapList = [];
 let len = 20;
 let delay = 100;
 let arrayStyle = "bars";
-let algoType = "selection";
+let algoType = "bubble";
 // let isSorting = false;
 
 const bubbleSort = arr => {
@@ -35,13 +35,15 @@ const selectionSort = arr => {
   for (let i = 0; i < n - 1; i++) {
     let min_idx = i;
     for (let j = i + 1; j < n; j++) {
+      swapList.push([j, -1]);
+      arrayList.push(JSON.parse(JSON.stringify(arr)));
       if (arr[j] < arr[min_idx]) {
         min_idx = j;
-        swapList.push([j, min_idx]);
-        arrayList.push(JSON.parse(JSON.stringify(arr)));
       }
     }
     [arr[i], arr[min_idx]] = [arr[min_idx], arr[i]];
+    swapList.push([i, min_idx]);
+    arrayList.push(JSON.parse(JSON.stringify(arr)));
   }
 }
 
@@ -69,20 +71,15 @@ const merge = (arr, l, mid, r) => {
     else {
       const key = arr[r];
       let index = r;
-
       while (index != l) {
         arr[index] = arr[index - 1];
-        swapList.push([index], [index - 1]);
         index--;
       }
       arr[l] = key;
-
       i++;
       j++;
       mid++;
-
     }
-    arrayList.push(arr);
   }
 }
 
@@ -92,8 +89,8 @@ const mergeSort = (arr, l, r) => {
     mergeSort(arr, l, mid);
     mergeSort(arr, mid + 1, r);
     merge(arr, l, mid, r);
-    arrayList.push(arr);
   }
+  console.log(array);
 }
 
 const setArray = (len) => {

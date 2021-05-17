@@ -22,6 +22,10 @@ header select {
   font-size: 16px;
 }
 
+header input {
+  width: 50px;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -61,4 +65,17 @@ button#sort, button#reset {
   background: none;
   border-radius: .4rem;
   margin: 0 10px;
+  box-shadow: 2px 2px;
+  transition: .2s;
+}
+
+button#sort:hover, button#reset:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 1px 2px;
+  opacity: 1;
+}
+
+button#sort:active, button#reset:active {
+  box-shadow: 0px 0px;
+  transform: translate(2px, 2px);
 }

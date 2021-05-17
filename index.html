@@ -29,11 +29,11 @@
     </div>
     <div>
       <label>Length: </label>
-      <input type="range" min="10" max="50" id="lengthSlider">
+      <input type="number" value="20" id="lengthSlider">
     </div>
     <div>
-      <label>Delay: </label>
-      <input type="range" min="50" max="500" id="delaySlider">
+      <label>Delay (ms): </label>
+      <input type="number" value="100" id="delaySlider">
     </div>
   </header>
   <div class="container">
@@ -43,7 +43,7 @@
       <button id="reset">Reset</button>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 
 </html>

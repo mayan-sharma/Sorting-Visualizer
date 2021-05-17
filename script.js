@@ -1,3 +1,6 @@
+import { bubbleSort, selectionSort, insertionSort } from './utils/algorithms.js';
+
+// DOM
 const arrayContainer = document.getElementById("array");
 const sortButton = document.getElementById("sort");
 const resetButton = document.getElementById('reset');
@@ -14,84 +17,6 @@ let delay = 100;
 let arrayStyle = "bars";
 let algoType = "bubble";
 // let isSorting = false;
-
-const bubbleSort = arr => {
-  const n = arr.length;
-
-  for (let i = 0; i < n - 1; i++) {
-    for (let j = 0; j < n - i - 1; j++) {
-      if (arr[j] > arr[j + 1]) {
-        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
-
-        swapList.push([j, j + 1]);
-        arrayList.push(JSON.parse(JSON.stringify(arr)));
-      }
-    }
-  }
-}
-
-const selectionSort = arr => {
-  const n = arr.length;
-  for (let i = 0; i < n - 1; i++) {
-    let min_idx = i;
-    for (let j = i + 1; j < n; j++) {
-      swapList.push([j, -1]);
-      arrayList.push(JSON.parse(JSON.stringify(arr)));
-      if (arr[j] < arr[min_idx]) {
-        min_idx = j;
-      }
-    }
-    [arr[i], arr[min_idx]] = [arr[min_idx], arr[i]];
-    swapList.push([i, min_idx]);
-    arrayList.push(JSON.parse(JSON.stringify(arr)));
-  }
-}
-
-const insertionSort = arr => {
-  const n = arr.length;
-  for (let i = 1; i < n; i++) {
-    let j = i - 1;
-    const key = arr[i];
-    while (j >= 0 && arr[j] > key) {
-      arr[j + 1] = arr[j--];
-      swapList.push([j + 1, j]);
-      arrayList.push(JSON.parse(JSON.stringify(arr)));
-    }
-    arr[j + 1] = key;
-  }
-}
-
-const merge = (arr, l, mid, r) => {
-  let i = l, j = mid + 1;
-
-  if (arr[mid] <= arr[j]) return;
-
-  while (i <= mid && j <= r) {
-    if (arr[i] <= arr[j]) i++;
-    else {
-      const key = arr[r];
-      let index = r;
-      while (index != l) {
-        arr[index] = arr[index - 1];
-        index--;
-      }
-      arr[l] = key;
-      i++;
-      j++;
-      mid++;
-    }
-  }
-}
-
-const mergeSort = (arr, l, r) => {
-  if (l < r) {
-    const mid = Math.floor((l + r) / 2);
-    mergeSort(arr, l, mid);
-    mergeSort(arr, mid + 1, r);
-    merge(arr, l, mid, r);
-  }
-  console.log(array);
-}
 
 const setArray = (len) => {
   array = [];
@@ -126,18 +51,18 @@ const addArrayDOM = (arr, swapPair, arrayStyle) => {
   arrayStyle == "bars" ? addBars(arr, swapPair) : addBlocks(arr, swapPair);
 }
 
-const sortDOM = (arrayStyle, algoType) => {
+const sortDOM = async (arrayStyle, algoType) => {
   arrayList = [];
   swapList = [];
   switch (algoType) {
     case "bubble":
-      bubbleSort(array);
+      bubbleSort(array, arrayList, swapList);
       break;
     case "selection":
-      selectionSort(array);
+      selectionSort(array, arrayList, swapList);
       break;
     case "insertion":
-      insertionSort(array);
+      insertionSort(array, arrayList, swapList);
       break;
     case "merge":
       mergeSort(array, 0, array.length - 1);
@@ -147,7 +72,7 @@ const sortDOM = (arrayStyle, algoType) => {
   }
   arrayList.forEach((arr, i) => {
     setTimeout(() => addArrayDOM(arr, swapList[i], arrayStyle), i * delay);
-  })
+  });
 }
 
 const displayArray = (array, arrayStyle) => {
@@ -174,8 +99,19 @@ delaySlider.addEventListener("change", e => {
   init();
 })
 
-sortButton.addEventListener('click', () => sortDOM(arrayStyle, algoType));
-resetButton.addEventListener('click', () => init());
+sortButton.addEventListener('click', () => {
+  sortButton.disabled = true;
+  resetButton.disabled = true;
+  sortDOM(arrayStyle, algoType);
+  setTimeout(() => {
+    sortButton.disabled = false;
+    resetButton.disabled = false;
+  }, arrayList.length * delay);
+});
+
+resetButton.addEventListener('click', () => {
+  init();
+});
 
 function init() {
   arrayContainer.innerHTML = "";
